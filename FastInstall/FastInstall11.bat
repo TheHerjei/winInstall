@@ -113,6 +113,10 @@ SCHTASKS /DELETE /TN "Adobe Acrobat Update Task"
 REM Rimuovo AppXProvisionedPackage per tutti gli utenti
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\appxRemove.ps1
 
+REM Abilito le connessioni desktop remoto multiple
+REM **Questo script di powershell va rilanciato dopo ogni feature upgrade di windows**
+powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
+
 REM Rimuovo Wallpaper
 REG ADD "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "" /f
 RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
