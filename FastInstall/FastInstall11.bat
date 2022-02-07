@@ -29,11 +29,7 @@ robocopy /mt:128 /S /E /R:0 /W:0 %BASEPATH%\bin %HOMEDRIVE%\bin
 REM Imposto C:\bin sulla variabile PATH...
 setx /M PATH "%PATH%;C:\bin"
 
-REM Installo applicazioni Salta se non è installato winget
-:winget
-winget > nul
-IF NOT EXIST "C:\Users\ismaele\AppData\Local\Microsoft\WindowsApps\winget.exe" (goto settings)
-
+REM Installo applicazioni
 winget upgrade --all
 winget install -e -h Open-Shell.Open-Shell-Menu &
 winget install -e -h VideoLAN.VLC &
@@ -45,9 +41,6 @@ winget install -e -h WhatsApp.WhatsApp &
 winget install -e -h Telegram.TelegramDesktop &
 winget install -e -h AntibodySoftware.WizTree &
 
-)
-
-:settings
 REM Link di Aiuto sul desktop
 mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\Sytem32\quickassist.exe"
 
