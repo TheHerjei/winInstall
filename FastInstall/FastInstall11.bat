@@ -114,6 +114,9 @@ REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v DisableWindowsC
 REM Creo pianificazione per upgrade automatico attraverso winget
 SCHTASKS /CREATE /U Administrator /P admin /SC DAILY /I 1 /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
+REM Rimuovo pianificazioni esistenti non insteressanti
+SCHTASKS /DELETE /TN "Adobe Acrobat Update Task"
+
 REM Rimuovo AppXProvisionedPackage per tutti gli utenti
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\appxRemove.ps1
 
