@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<hosts:wpkg xmlns:hosts="http://www.wpkg.org/hosts" xmlns:wpkg="http://www.wpkg.org/wpkg"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.wpkg.org/hosts xsd/hosts.xsd ">
-	<host name="W-.+" profile-id="domain" />
-	<host name="H.+" profile-id="home" />
-	<host name=".+" profile-id="other" />
-</hosts:wpkg>
