@@ -29,6 +29,9 @@ robocopy /mt:128 /S /E /R:0 /W:0 %BASEPATH%\bin %HOMEDRIVE%\bin
 REM Imposto C:\bin sulla variabile PATH...
 setx /M PATH "%PATH%;C:\bin"
 
+REM Gestione aggiornamenti di windows
+powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
+
 REM Installo applicazioni
 winget upgrade --all
 winget install -e -h Open-Shell.Open-Shell-Menu &
