@@ -100,6 +100,9 @@ sc config "PhoneSvc" start= disabled
 sc config "wisvc" start= disabled
 sc config "ZoomCptService" start= manual
 
+REM Attivo utente Administrator ATTENZIONE! USARE CON CAUTELA!
+net user Administrator admin /active:yes
+
 REM Importo l'associazione files per tutti gli utenti
 if EXIST %BASEPATH%\AppAssociations\AppAssociations.xml (
 dism /online /Import-DefaultAppAssociations:"%BASEPATH%\AppAssociations\AppAssociations.xml"
@@ -107,6 +110,9 @@ dism /online /Import-DefaultAppAssociations:"%BASEPATH%\AppAssociations\AppAssoc
 
 REM Disabilito Consumer Experience
 REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f
+
+REM Creo pianificazione per upgrade automatico attraverso winget
+SCHTASKS /CREATE /U Administrator /P admin /SC DAILY /I 1 /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
 REM Rimuovo AppXProvisionedPackage per tutti gli utenti
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\appxRemove.ps1
