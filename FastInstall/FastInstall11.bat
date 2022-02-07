@@ -45,7 +45,7 @@ winget install -e -h Telegram.TelegramDesktop &
 winget install -e -h AntibodySoftware.WizTree &
 
 REM Link di Aiuto sul desktop
-mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\Sytem32\quickassist.exe"
+mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\System32\quickassist.exe"
 
 REM Escludo l'ibernazione...
 powercfg /hibernate off
