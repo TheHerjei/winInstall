@@ -126,9 +126,9 @@ REM Creo pianificazione per upgrade automatico attraverso winget
 SCHTASKS /CREATE /SC DAILY /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
 REM Rimuovo pianificazioni esistenti non insteressanti
-SCHTASKS /DELETE /TN "Adobe Acrobat Update Task"
-SCHTASKS /DELETE /TN "GoogleUpdade*"
-SCHTASKS /DELETE /TN "MicrosoftEdge*"
+SCHTASKS /DELETE /TN "Adobe Acrobat Update Task" /F
+SCHTASKS /DELETE /TN "GoogleUpdade*" /F
+SCHTASKS /DELETE /TN "MicrosoftEdge*" /F
 
 REM Rimuovo AppXProvisionedPackage per tutti gli utenti
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\appxRemove.ps1
