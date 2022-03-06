@@ -33,8 +33,7 @@ REM Gestione aggiornamenti di windows
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
 
 REM Installo applicazioni
-winget upgrade --all
-winget install -e -h Open-Shell.Open-Shell-Menu &
+winget upgrade --all --accept-source-agreements
 winget install -e -h VideoLAN.VLC &
 winget install -e -h 7zip.7zip &
 winget install -e -h Zoom.Zoom &
@@ -43,12 +42,28 @@ winget install -e -h Adobe.Acrobat.Reader.64-bit &
 winget install -e -h WhatsApp.WhatsApp &
 winget install -e -h Telegram.TelegramDesktop &
 winget install -e -h AntibodySoftware.WizTree &
+winget install -e -h ONLYOFFICE.DesktopEditors &
+winget install -e -h Mozzilla.Thunderbird &
+winget install -e -h Cyanfish.NAPS2
+
+REM Disinstallo applicazioni inutili
+winget uninstall -h Microsoft.OneDrive
+winget uninstall -h Microsoft.Edge
+winget uninstall -h "Microsoft Edge Update"
+winget uninstall -h Microsoft.EdgeWebView2Runtime
 
 REM Link di Aiuto sul desktop
 mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\System32\quickassist.exe"
 
-REM Escludo l'ibernazione...
+REM Opzioni di risparmio energia
+REM Escludo l'ibernazione... (da usare su pc fissi)
 powercfg /hibernate off
+
+REM Imposto timeout disattivazione schermo
+powercfg /change monitor-timeout-ac 10
+
+REM Disabilito sospensione automatica se alimentato a rete elettrica
+powercfg /change standby-timeout-ac 0
 
 REM Disattivo servizi non utili
 sc config "DusmSvc" start= disabled
@@ -97,7 +112,7 @@ sc config "wisvc" start= disabled
 sc config "ZoomCptService" start= manual
 
 REM Attivo utente Administrator ATTENZIONE! USARE CON CAUTELA!
-net user Administrator admin /active:yes
+REM net user Administrator admin /active:yes
 
 REM Importo l'associazione files per tutti gli utenti
 if EXIST %BASEPATH%\AppAssociations\AppAssociations.xml (
@@ -108,10 +123,12 @@ REM Disabilito Consumer Experience
 REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f
 
 REM Creo pianificazione per upgrade automatico attraverso winget
-SCHTASKS /CREATE /U Administrator /P admin /SC DAILY /I 1 /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
+SCHTASKS /CREATE /SC DAILY /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
 REM Rimuovo pianificazioni esistenti non insteressanti
 SCHTASKS /DELETE /TN "Adobe Acrobat Update Task"
+SCHTASKS /DELETE /TN "GoogleUpdade*"
+SCHTASKS /DELETE /TN "MicrosoftEdge*"
 
 REM Rimuovo AppXProvisionedPackage per tutti gli utenti
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\appxRemove.ps1
