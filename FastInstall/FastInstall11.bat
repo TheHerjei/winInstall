@@ -22,6 +22,9 @@ IF %ERRORLEVEL% EQU 0 (
 	icacls E:\autoRun.Inf /deny everyone:F
 )
 
+REM Aggiungo esclusione per C:\bin da Win Defender
+powershell -inputformat none -outputformat none -NonInteractive -Command Add-MpPreference -ExclusionPath "C:\bin"
+
 REM Copio i tools in C:\bin
 mkdir %HOMEDRIVE%\bin
 robocopy /mt:128 /S /E /R:0 /W:0 %BASEPATH%\bin %HOMEDRIVE%\bin
@@ -30,30 +33,31 @@ REM Imposto C:\bin sulla variabile PATH...
 setx /M PATH "%PATH%;C:\bin"
 
 REM Gestione aggiornamenti di windows
-powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
+REM powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
 
 REM Installo applicazioni
 winget upgrade --all --accept-source-agreements
 winget install -e -h VideoLAN.VLC &
+winget install -e -h Notepad++.Notepad++ &
 winget install -e -h 7zip.7zip &
 winget install -e -h Zoom.Zoom &
 winget install -e -h Google.Chrome &
 winget install -e -h Adobe.Acrobat.Reader.64-bit &
-winget install -e -h WhatsApp.WhatsApp &
-winget install -e -h Telegram.TelegramDesktop &
 winget install -e -h AntibodySoftware.WizTree &
-winget install -e -h ONLYOFFICE.DesktopEditors &
-winget install -e -h Mozzilla.Thunderbird &
+winget install -e -h TheDocumentFoundation.LibreOffice &
+winget install -e -h PDFsam.PDFsam &
+winget install -e -h voidtools.Everything &
+winget install -e -h Mozilla.Firefox &
 winget install -e -h Cyanfish.NAPS2
 
 REM Disinstallo applicazioni inutili
-winget uninstall -h Microsoft.OneDrive
-winget uninstall -h Microsoft.Edge
-winget uninstall -h "Microsoft Edge Update"
-winget uninstall -h Microsoft.EdgeWebView2Runtime
+REM winget uninstall -h Microsoft.OneDrive
+REM winget uninstall -h Microsoft.Edge
+REM winget uninstall -h "Microsoft Edge Update"
+REM winget uninstall -h Microsoft.EdgeWebView2Runtime
 
 REM Link di Aiuto sul desktop
-mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\System32\quickassist.exe"
+REM mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\System32\quickassist.exe"
 
 REM Opzioni di risparmio energia
 REM Escludo l'ibernazione... (da usare su pc fissi)
@@ -115,7 +119,7 @@ REM Attivo utente Administrator ATTENZIONE! USARE CON CAUTELA!
 REM net user Administrator admin /active:yes
 
 REM Importo l'associazione files per tutti gli utenti
-if EXIST %BASEPATH%\AppAssociations\AppAssociations.xml (
+if EXIST %BASEPATH%\AppAssociations.xml (
 dism /online /Import-DefaultAppAssociations:"%BASEPATH%\AppAssociations\AppAssociations.xml"
 )
 
@@ -123,27 +127,27 @@ REM Disabilito Consumer Experience
 REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v DisableWindowsConsumerFeatures /t REG_DWORD /d 1 /f
 
 REM Creo pianificazione per upgrade automatico attraverso winget
-SCHTASKS /CREATE /SC DAILY /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
+REM SCHTASKS /CREATE /SC DAILY /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
 REM Rimuovo pianificazioni esistenti non insteressanti
 SCHTASKS /DELETE /TN "Adobe Acrobat Update Task" /F
-SCHTASKS /DELETE /TN "GoogleUpdade*" /F
-SCHTASKS /DELETE /TN "MicrosoftEdge*" /F
+REM SCHTASKS /DELETE /TN "GoogleUpdade*" /F
+REM SCHTASKS /DELETE /TN "MicrosoftEdge*" /F
 
 REM Rimuovo AppXProvisionedPackage per tutti gli utenti
 powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\appxRemove.ps1
 
 REM Abilito le connessioni desktop remoto multiple
 REM **Questo script di powershell va rilanciato dopo ogni feature upgrade di windows**
-powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
+REM powershell Set-ExecutionPolicy Bypass -Scope Process -Force; %BASEPATH%\multiplerdp.ps1
 
 REM Rimuovo Wallpaper
-REG ADD "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "" /f
-RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
+REM REG ADD "HKEY_CURRENT_USER\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "" /f
+REM RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters
 
 REM Rinomino il computer
-SET /a _rand=(%RANDOM%*100/32768)+1
-wmic ComputerSystem where Name=%COMPUTERNAME% call Rename Name="WTest-%_rand%"
+REM SET /a _rand=(%RANDOM%*100/32768)+1
+wmic ComputerSystem where Name=%COMPUTERNAME% call Rename Name="UFFTC01"
 
 REM Apro WPD e Dism per configurazioni aggiuntive
 start C:\bin\WPD.exe
