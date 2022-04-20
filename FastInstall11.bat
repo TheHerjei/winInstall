@@ -126,6 +126,11 @@ REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v DisableWindowsC
 REM Creo pianificazione per upgrade automatico attraverso winget
 SCHTASKS /CREATE /SC DAILY /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
+REM Abilito backup automatici con schedulazione
+REM Ricorda di modificare il batch di backup!!!
+copy resticBackup.bat C:\bin\
+SCHTASKS /CREATE /SC DAILY /TN "Backup Documenti" /TR "C:\bin\resticBackup.bat" /ST 13:00
+
 REM Rimuovo pianificazioni esistenti non insteressanti
 SCHTASKS /DELETE /TN "Adobe Acrobat Update Task" /F
 REM SCHTASKS /DELETE /TN "GoogleUpdade*" /F
