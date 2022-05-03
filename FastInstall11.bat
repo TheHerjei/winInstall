@@ -54,7 +54,7 @@ winget install -e -h Mozilla.Firefox
 winget install -e -h Cyanfish.NAPS2
 
 REM Abilito autoUpdate di Zoom
-REG ADD HKLM\Software\Policies\Zoom\Zoom Meetings\General /v EnableClientAutoUpdate /t REG_DWORD /d 1 /f
+REG ADD "HKLM\Software\Policies\Zoom\Zoom Meetings\General" /v EnableClientAutoUpdate /t REG_DWORD /d 1 /f
 
 REM Link di Aiuto sul desktop
 REM mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\System32\quickassist.exe"
