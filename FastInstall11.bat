@@ -44,6 +44,7 @@ winget install -e -h VideoLAN.VLC
 winget install -e -h Notepad++.Notepad++
 winget install -e -h 7zip.7zip
 winget install -e -h Google.Chrome
+winget install -e -h Zoom.Zoom
 REM winget install -e -h Adobe.Acrobat.Reader.64-bit
 REM winget install -e -h AntibodySoftware.WizTree
 REM winget install -e -h TheDocumentFoundation.LibreOffice
@@ -52,8 +53,8 @@ REM winget install -e -h voidtools.Everything
 winget install -e -h Mozilla.Firefox
 winget install -e -h Cyanfish.NAPS2
 
-REM Installo Zoom da msi
-msiexec /package %BASEPATH%\ZoomInstallerFull.msi /lex zoommsi.log ZoomAutoUpdate="true"
+REM Abilito autoUpdate di Zoom
+REG ADD HKLM\Software\Policies\Zoom\Zoom Meetings\General /v EnableClientAutoUpdate /t REG_DWORD /d 1 /f
 
 REM Link di Aiuto sul desktop
 REM mklink %PUBLIC%\Desktop\AIUTO "C:\Windows\System32\quickassist.exe"
