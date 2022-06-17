@@ -129,6 +129,9 @@ REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent /v DisableWindowsC
 REM Creo pianificazione per upgrade automatico attraverso winget
 SCHTASKS /CREATE /SC DAILY /TN "AppUpgrade" /TR "C:\bin\appupgrade.bat" /ST 18:00
 
+REM Abilito punti di ripristino automatici
+SCHTASKS /CREATE /SC DAILY /TN "Punto di ripristino" /TR "C:\bin\autorestore.bat" /ST 14:00
+
 REM Abilito backup automatici con schedulazione
 REM Ricorda di modificare il batch di backup!!!
 copy resticBackup.bat C:\bin\
